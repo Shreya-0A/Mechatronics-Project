@@ -1,0 +1,21 @@
+#Loadcell
+from machine import Pin
+import time
+from hx711 import HX711
+
+# Pin setup
+dt_pin = Pin(15, Pin.IN)  # Data Pin connected to GPIO 15
+sck_pin = Pin(14, Pin.OUT)  # Clock Pin connected to GPIO 14
+
+# Initialize HX711 with the given pins
+hx711 = HX711(dt_pin, sck_pin)
+
+# Calibration factor (this is something you'll need to calibrate)
+hx711.set_scale(2280)  # You will need to adjust this value
+hx711.tare()  # Reset the scale to zero
+
+while True:
+    # Read weight
+    weight = hx711.get_weight(5)  # Read weight and average over 5 samples
+    print(f"Weight: {weight} g")
+    time.sleep(1)
